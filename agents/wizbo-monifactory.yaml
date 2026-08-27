@@ -1,0 +1,46 @@
+apiVersion: bingecraft.net/v0
+kind: GamePlaneAgent
+metadata:
+  name: wizbo-monifactory
+  namespace: argocd
+spec:
+  build:
+    repoURL: https://github.com/bingecraft-net/wizbo-monifactory.git
+    targetRevision: HEAD
+    docker:
+      context: .
+      file: Containerfile
+
+  imageTagBase: https://docker.bingecraft.net/wizbo-monifactory # version will be appended automatically
+
+  template:
+    # apiVersion: argoproj.io/v1alpha1
+    # kind: Application
+    metadata:
+      # name: wizbo-monifactory
+      # You'll usually want to add your resources to the argocd namespace.
+      # namespace: argocd
+      # Add this finalizer ONLY if you want these to cascade delete.
+      finalizers:
+        # The default behaviour is foreground cascading deletion
+        - resources-finalizer.argocd.argoproj.io
+        # Alternatively, you can use background cascading deletion
+        # - resources-finalizer.argocd.argoproj.io/background
+      labels:
+        name: wizbo-monifactory
+    spec:
+      project: default
+
+      source:
+        repoURL: https://github.com/bingecraft-net/wizbo-monifactory.git
+        targetRevision: HEAD
+        path: .game-plane/manifests # the image string will be continuously synced and available to the chart as {{ .Values.Image }}
+
+      # Destination cluster and namespace to deploy the application
+      destination:
+        # cluster API URL
+        server: https://kubernetes.default.svc
+        # or cluster name
+        # name: my-game-cluster
+        # The namespace will only be set for namespace-scoped resources that have not set a value for .metadata.namespace
+        namespace: wizbo-monifactory
