@@ -1,0 +1,18 @@
+# when pushed commits match repo targetRevision
+# and pushed commits affect docker context or file
+# then stream produces new build
+apiVersion: bingecraft.net/v0
+kind: BuildStream
+metadata:
+  name: monifactory
+  namespace: argocd
+spec:
+  source:
+    repoURL: https://github.com/bingecraft-net/game-plane/images/monifactory
+    targetRevision: HEAD
+    docker:
+      context: .
+      file: Containerfile
+  imageTag:
+    registry: docker.bingecraft.net
+    name: monifactory

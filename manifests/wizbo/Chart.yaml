@@ -1,0 +1,3 @@
+apiVersion: v2 # The chart API version (required)
+name: wizbo # The name of the chart (required)
+version: 0.0.1 # The version of the chart (required)

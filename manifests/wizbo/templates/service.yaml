@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: wizbo
+  labels:
+    app: wizbo
+spec:
+  ports:
+  - port: 25565
+    name: minecraft
+  selector:
+    app: wizbo
