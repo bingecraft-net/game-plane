@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+
+source commands/tag
+
+podman build \
+  --build-arg VERSION_VELOCITY=$VERSION_VELOCITY \
+  --build-arg VERSION_VELOCITY_BUILD=$VERSION_VELOCITY_BUILD \
+  --tag $TAG \
+  .

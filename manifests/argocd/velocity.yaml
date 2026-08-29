@@ -1,0 +1,63 @@
+apiVersion: bingecraft.net/v0
+kind: BuildStream
+metadata:
+  name: velocity
+  namespace: argocd
+spec:
+  source:
+    repoURL: https://github.com/bingecraft-net/game-plane/images/velocity
+    targetRevision: HEAD
+    docker:
+      context: .
+      file: Containerfile
+      buildArgs:
+        - name: VERSION_VELOCITY
+          value: 3.4.0-SNAPSHOT
+        - name: VERSION_VELOCITY_BUILD
+          value: 558
+
+  imageTags:
+    - 'docker.bingecraft.net/velocity:$git.commit.sha'
+---
+apiVersion: argocd-image-updater.argoproj.io/v1alpha1
+kind: ImageUpdater
+metadata:
+  name: velocity
+  namespace: argocd
+spec:
+  applicationRefs:
+    - namePattern: velocity
+      images:
+        - alias: velocity
+          imageName: velocity
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: velocity
+  # You'll usually want to add your resources to the argocd namespace.
+  namespace: argocd
+  # Add this finalizer ONLY if you want these to cascade delete.
+  finalizers:
+    # The default behaviour is foreground cascading deletion
+    - resources-finalizer.argocd.argoproj.io
+    # Alternatively, you can use background cascading deletion
+    # - resources-finalizer.argocd.argoproj.io/background
+  labels:
+    name: velocity
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/bingecraft-net/game-plane.git
+    targetRevision: HEAD
+    path: manifests/velocity
+
+  # Destination cluster and namespace to deploy the application
+  destination:
+    # cluster API URL
+    server: https://kubernetes.default.svc
+    # or cluster name
+    # name: my-game-cluster
+    # The namespace will only be set for namespace-scoped resources that have not set a value for .metadata.namespace
+    namespace: velocity

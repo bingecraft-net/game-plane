@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+
+mkdir -p backups
+
+source commands/tag
+
+podman run \
+  --cidfile cidfile \
+  --detach \
+  --interactive \
+  --publish 25565:25565 \
+  --tty \
+  --volume $(readlink -f backups):/home/minecraft/backups:U \
+  --volume $(readlink -f secrets):/home/minecraft/secrets \
+  $TAG

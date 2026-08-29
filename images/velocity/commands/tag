@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+
+export VERSION_VELOCITY=$(cat version/velocity)
+export VERSION_VELOCITY_BUILD=$(cat version/velocity-build)
+
+export TAG=$(echo velocity-server/$VERSION_VELOCITY:$VERSION_VELOCITY_BUILD | tr '[:upper:]' '[:lower:]')
