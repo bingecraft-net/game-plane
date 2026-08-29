@@ -17,7 +17,7 @@ spec:
           value: 558
 
   imageTags:
-    - 'docker.bingecraft.net/velocity:$git.commit.sha'
+    - 'kubernetes.default.svc/velocity:$git.commit.sha'
 ---
 apiVersion: argocd-image-updater.argoproj.io/v1alpha1
 kind: ImageUpdater

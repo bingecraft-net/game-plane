@@ -18,4 +18,4 @@ spec:
           value: 99576749342afa1b498f8cbc97d1d17a119cad4e
 
   imageTags:
-    - 'docker.bingecraft.net/monifactory/0.13.5:$git.commit.sha'
+    - 'kubernetes.default.svc/monifactory/0.13.5:$git.commit.sha'
