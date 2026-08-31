@@ -1,0 +1,32 @@
+#!/usr/bin/env zsh
+
+executable="$@"
+
+if [ "$executable" = "" ]; then
+  echo expected required argument \"executable\"
+  exit 1
+fi
+
+if [ ! -d world ] && find $HOME/backups -name '*.tar.gz'; then
+  latest="$(ls -t $HOME/backups/*.tar.gz | head -1)"
+  if [ "$latest" != "" ]; then
+    tar xf $latest
+  fi
+fi
+
+PCF_FILE=config/proxy-compatible-forge.toml
+if [ ! -f $PCF_FILE ] ; then
+  echo "[forwarding]\nsecret= \"$(cat /home/minecraft/secrets/forwarding.secret)\"" > $PCF_FILE
+fi
+
+if [ ! -f eula.txt ]; then
+  eval "$executable"
+  if grep "You need to agree to the EULA in order to run the server." logs/latest.log >/dev/null; then
+    sed -i 's/eula=false/eula=true/' eula.txt
+  else
+    echo expected eula notification to be present in latest log
+    exit 1
+  fi
+fi
+
+exec sh -c "exec $executable"

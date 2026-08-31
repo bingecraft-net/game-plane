@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+
+set -e
+
+echo -n save-off\\nsave-all | /bin/rcon-cli --password password
+sleep 1
+sync
+timestamp=$(date +%F_%T | tr ':' '_')
+tar czf $HOME/backups/$timestamp.tar.gz -C $HOME/server world*
+/bin/rcon-cli --password password save-on
