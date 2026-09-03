@@ -1,1 +1,25 @@
-tbd
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: bootstrap
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    name: bootstrap
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/bingecraft-net/game-plane.git
+    targetRevision: HEAD
+    path: manifests/argocd
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: bootstrap
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

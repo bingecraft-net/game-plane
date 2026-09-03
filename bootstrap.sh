@@ -25,3 +25,5 @@ fi
 
 # todo pin the version
 kubectl apply -n argocd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+kubectl apply -n argocd --server-side --force-conflicts -f bootstrap-manifests/argocd.yaml
