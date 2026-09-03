@@ -1,0 +1,40 @@
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'bootstrap-manifests/**'
+      - 'bootstrap.sh'
+  workflow_dispatch:
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - run: |
+          install -d -m 700 "$HOME/.ssh"
+
+      - env:
+          SSH_KNOWN_HOSTS: |
+            # game-plane.bingecraft.net:8822 SSH-2.0-OpenSSH_10.5
+            |1|/ZgDSfnegaC5XdX2xzq5wPKTVzI=|yziJ5/ZNIpvW8cXhIpWiLeNX7bA= ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDqa/PegI5JBEnBOqEFL8Qp6+Eyxi/CgV5Jdc9gyJtaIWYMJh8o5lavQX1zacf/5YIg/R6A4/aSIlzOpC577GS7otD1YRGpflpaOrqX6eaBwHOv2pecDygBmpC9mTJm+K066pBLhc2KcOj7DiKZyjl5CPqx29LD9u0D9qFNcE4Xlc6STnxQuXyv+FwexYkR6xGlapvV+wMZd914+LohMRJZmB5ojlgKhcxdhQF98BF5Lun7HqMINijhSh4rei/7k88aXGl4q6TrNnjH/hvZNQusPJByBlNF3JaUknGGyhq2ucvjasOCAL+hkxo+uTKFWOVukCrLiRoTpUzp9j1XCkP1Zi053khHKfWh6Ozcj3to7KEoS9DUjnpoSxqWwL3pmpAcErrYKRkHef1hae/snAam9ZVIla2R/tOoeT7Mo7PNU6pqUBxvkGuSSxHSye7w6b+/ubnqihVHHNZmB1PKMlvI8XeLbfv7StV61KcbKZT21LPry7t7xv4sMJnmnEQKD00=
+            # game-plane.bingecraft.net:8822 SSH-2.0-OpenSSH_10.5
+            |1|WrcuWPCjy9yCeCkGQAZYAObN6Eo=|e+e3+mwZRRs3uV3tHZGElNZtuBg= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBMZQoF4phRj+KFdOd6yC5pBhXXYvzIQlxw4ufDrXKc7nWFlKK1wz/e5tyJdQGLTThdUiWsotwROc9krmGJsxSF8=
+            # game-plane.bingecraft.net:8822 SSH-2.0-OpenSSH_10.5
+            |1|f+bwg3BzgNch6cvRQtOxkfzXdW8=|2dBnsuKJj/spteiCEREWJHbuA0I= ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBuNkVy62B7tSaVCnv0QIqG9ukWHJ20NMxmWH7p8wry1
+            # game-plane.bingecraft.net:8822 SSH-2.0-OpenSSH_10.5
+            # game-plane.bingecraft.net:8822 SSH-2.0-OpenSSH_10.5
+        run: |
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 600 "$HOME/.ssh/known_hosts"
+
+      - env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          chmod 600 "$HOME/.ssh/id_ed25519"
+
+      - run: |
+          ssh -p 8822 game-plane@game-plane.bingecraft.net 'bash -s' < bootstrap.sh
