@@ -33,6 +33,6 @@ kubectl apply -n argocd --server-side --force-conflicts -f "https://raw.githubus
 
 ARGO_WORKFLOWS_VERSION="v4.1.2"
 
-kubectl apply -n argocd --server-side --force-conflicts -f "https://github.com/argoproj/argo-workflows/releases/download/${ARGO_WORKFLOWS_VERSION}/quick-start-minimal.yaml"
+kubectl apply -n argo --server-side --force-conflicts -f "https://github.com/argoproj/argo-workflows/releases/download/${ARGO_WORKFLOWS_VERSION}/quick-start-minimal.yaml"
 
 kubectl apply -n argocd --server-side -f bootstrap-manifests
