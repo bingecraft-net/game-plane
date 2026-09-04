@@ -15,6 +15,11 @@ spec:
       path: config
       directory:
         include: install.yaml
+    - repoURL: https://github.com/argoproj/argo-workflows.git
+      targetRevision: v4.1.2
+      path: manifests
+      directory:
+        include: quick-start-minimal.yaml
     - repoURL: https://github.com/bingecraft-net/game-plane.git
       targetRevision: HEAD
       path: manifests/argocd
