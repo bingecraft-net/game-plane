@@ -25,6 +25,14 @@ fi
 
 ARGO_CD_VERSION="stable"
 
-kubectl apply -n argocd --server-side -f https://raw.githubusercontent.com/argoproj/argo-cd/${ARGO_CD_VERSION}/manifests/install.yaml
+kubectl apply -n argocd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/${ARGO_CD_VERSION}/manifests/install.yaml
 
-kubectl apply -n argocd --server-side -f bootstrap-manifests/bootstrap.yaml
+ARGOCD_IMAGE_UPDATER_VERSION="stable"
+
+kubectl apply -n argocd --server-side --force-conflicts -f "https://raw.githubusercontent.com/argoproj-labs/argocd-image-updater/${ARGOCD_IMAGE_UPDATER_VERSION}/config/install.yaml"
+
+ARGO_WORKFLOWS_VERSION="v4.1.2"
+
+kubectl apply -n argocd --server-side --force-conflicts -f "https://github.com/argoproj/argo-workflows/releases/download/${ARGO_WORKFLOWS_VERSION}/quick-start-minimal.yaml"
+
+kubectl apply -n argocd --server-side -f bootstrap-manifests

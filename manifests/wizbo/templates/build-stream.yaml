@@ -1,0 +1,21 @@
+# when pushed commits match repo targetRevision
+# and pushed commits affect docker context or file
+# then stream produces new build
+#apiVersion: bingecraft.net/v0
+#kind: BuildStream
+#metadata:
+#  name: wizbo
+#  namespace: argocd
+#spec:
+#  source:
+#    repoURL: https://github.com/bingecraft-net/game-plane/images/wizbo
+#    targetRevision: HEAD
+#    docker:
+#      context: .
+#      file: Containerfile
+#      buildArgs:
+#        - name: refspec
+#          value: 99576749342afa1b498f8cbc97d1d17a119cad4e
+#
+#  imageTags:
+#    - 'kubernetes.default.svc/wizbo:$git.commit.sha'
