@@ -1,4 +1,4 @@
-for executable in git kind kubectl argocd; do
+for executable in git kind kubectl; do
     if ! which $executable ; then
         echo "$executable is not installed. Please install $executable and try again."
         exit 1
@@ -23,10 +23,8 @@ if ! kubectl get namespace argocd >/dev/null 2>&1; then
     kubectl create namespace argocd
 fi
 
-# todo pin the version
-kubectl apply -n argocd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+ARGO_CD_VERSION="stable"
 
-# todo pin the version
-kubectl apply -n argocd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj-labs/argocd-image-updater/stable/config/install.yaml
+kubectl apply -n argocd --server-side -f https://raw.githubusercontent.com/argoproj/argo-cd/${ARGO_CD_VERSION}/manifests/install.yaml
 
-kubectl apply -n argocd --server-side --force-conflicts -f bootstrap-manifests/argocd.yaml
+kubectl apply -n argocd --server-side -f bootstrap-manifests/bootstrap.yaml

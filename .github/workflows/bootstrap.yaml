@@ -37,4 +37,4 @@ jobs:
           chmod 600 "$HOME/.ssh/id_ed25519"
 
       - run: |
-          ssh -p 8822 game-plane@game-plane.bingecraft.net 'bash -s' < bootstrap.sh
+          ssh -p 8822 game-plane@game-plane.bingecraft.net 'bash -s' < bootstrap-scripts/bootstrap.sh

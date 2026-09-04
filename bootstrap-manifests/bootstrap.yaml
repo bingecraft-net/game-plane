@@ -9,13 +9,18 @@ metadata:
     name: bootstrap
 spec:
   project: default
-  source:
-    repoURL: https://github.com/bingecraft-net/game-plane.git
-    targetRevision: HEAD
-    path: manifests/argocd
+  sources:
+    - repoURL: https://github.com/argoproj-labs/argocd-image-updater.git
+      targetRevision: stable
+      path: config
+      directory:
+        include: install.yaml
+    - repoURL: https://github.com/bingecraft-net/game-plane.git
+      targetRevision: HEAD
+      path: manifests/argocd
   destination:
     server: https://kubernetes.default.svc
-    namespace: bootstrap
+    namespace: argocd
   syncPolicy:
     automated:
       enabled: true
