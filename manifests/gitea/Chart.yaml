@@ -1,0 +1,8 @@
+apiVersion: v2 # The chart API version (required)
+name: gitea # The name of the chart (required)
+version: 0.0.1 # The version of the chart (required)
+
+dependencies:
+  - name: gitea
+    version: v12.7.0
+    repository: https://dl.gitea.com/charts/
