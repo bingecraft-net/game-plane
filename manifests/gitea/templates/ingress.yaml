@@ -6,7 +6,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - host: gitea.bingecraft.com
+  - host: git.bingecraft.com
     http:
       paths:
       - path: /
