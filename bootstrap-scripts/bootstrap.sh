@@ -6,7 +6,13 @@ for executable in kind kubectl; do
 done
 
 if kind get clusters 2>&1 | grep "No kind clusters found"; then
+
+    CLOUD_PROVIDER_KIND_VERSION="latest"
+
+    go install "sigs.k8s.io/cloud-provider-kind@${CLOUD_PROVIDER_KIND_VERSION}"
+
     kind create cluster
+
 fi
 
 if ! kubectl get namespace argocd >/dev/null 2>&1; then
