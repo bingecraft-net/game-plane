@@ -3,15 +3,23 @@ set -euo pipefail
 
 trap 'echo "Error on line $LINENO"; exit 1' ERR
 
-podman build -t control-scripts -f .control-scripts/Containerfile .control-scripts
+PATH="$PATH:$HOME/.local/bin"
 
-podman run --rm \
-    --privileged \
-    --volume /dev:/dev \
-    --volume /run:/run \
-    --volume /run/libpod:/run/libpod \
-    --volume $HOME/.local/share/containers:/root/.local/share/containers \
-    --env KIND_EXPERIMENTAL_PROVIDER=podman \
-    --env STORAGE_DRIVER=overlay \
-    control-scripts \
-    idpbuilder create --name "game-plane"
+if ! which podman ; then
+    echo "podman is not installed. Install it to continue."
+    exit 1
+fi
+
+if ! which idpbuilder ; then
+    echo "idpbuilder is not installed. Install it now? [yN]"
+    read -r response
+    if [ "$response" = "y" ]; then
+        curl -sLo tar.gz https://github.com/cnoe-io/idpbuilder/releases/download/v0.10.2/idpbuilder-linux-amd64.tar.gz
+        mkdir -p ~/.local/bin ~/.local/share/idpbuilder
+        tar -xzf tar.gz -C ~/.local/share/idpbuilder
+        install -m 755 ~/.local/share/idpbuilder/idpbuilder ~/.local/bin/idpbuilder
+        rm tar.gz
+    fi
+fi
+
+idpbuilder create --help
