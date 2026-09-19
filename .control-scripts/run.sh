@@ -22,4 +22,4 @@ if ! which idpbuilder ; then
     fi
 fi
 
-idpbuilder create --name game-plane
+idpbuilder create --name game-plane --host game-plane.bingecraft.net
