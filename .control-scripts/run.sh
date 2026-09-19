@@ -9,6 +9,7 @@ podman run --rm \
     --privileged \
     --volume /dev:/dev \
     --volume /run:/run \
+    --volume /run/libpod:/run/libpod \
     --volume $HOME/.local/share/containers:/root/.local/share/containers \
     --env KIND_EXPERIMENTAL_PROVIDER=podman \
     --env STORAGE_DRIVER=overlay \
