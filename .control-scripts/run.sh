@@ -22,4 +22,4 @@ if ! which idpbuilder ; then
     fi
 fi
 
-idpbuilder create --help
+idpbuilder create --name game-plane
