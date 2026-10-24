@@ -5,8 +5,8 @@ One command to bootstrap Game Plane onto your infrastructure.
 ## Bootstrap
 
 The CLI bootstraps Game Plane onto your existing infrastructure:
-- Creates a Kind cluster (if none exists)
-- Installs Argo CD into the cluster
+- Bootstraps a single **Kind cluster spanning all remote servers** via Ansible (no Kind installed on the CLI host)
+- Installs Argo CD into the Kind cluster
 - Verifies connectivity to **all servers** in your inventory via Ansible
 
 ## Local Inventory Directory
@@ -55,11 +55,10 @@ gameplane bootstrap --inventory /path/to/local/inventory
 ```
 
 Under the hood:
-1. **Kind** — creates a lightweight Kubernetes cluster
-2. **Argo CD** — deploys into Kind, ready to reconcile game server charts
-3. **Ansible** — reads `inventory/hosts.yml` and `inventory/known_hosts` from the local directory, then verifies connectivity to **all servers** listed (SSH, basic packages)
-4. **ApplicationSet controller** — installs the Argo CD ApplicationSet controller so it is ready to receive ApplicationSet resources
-5. **Status** — surfaces Game Plane status through the CLI
+1. **Ansible** — reads `inventory/hosts.yml` and `inventory/known_hosts` from the local directory, verifies connectivity to **all servers** listed (SSH, basic packages), then bootstraps **Kind** on each remote server via Ansible (Kind is not installed on the CLI host)
+2. **Argo CD** — deploys into the remote Kind clusters, ready to reconcile game server charts
+3. **ApplicationSet controller** — installs the Argo CD ApplicationSet controller so it is ready to receive ApplicationSet resources
+4. **Status** — surfaces Game Plane status through the CLI
 
 > **Note:** Bootstrap takes a **local directory** containing server inventory — it does not touch game server manifests. That is the responsibility of `gameplane run` (story 1003).
 
@@ -69,7 +68,7 @@ Under the hood:
 gameplane debootstrap
 ```
 
-- Removes the Kind cluster and Argo CD
+- Removes the Kind clusters and Argo CD from remote servers
 - Leaves your servers and game worlds untouched
 
 ## Expected User Flow
@@ -82,7 +81,7 @@ gameplane debootstrap
 
 ## Acceptance Criteria
 
-- [ ] One command bootstraps Kind + Argo CD + server connectivity verification across **all inventory hosts**
+- [ ] One command bootstraps Kind on remote servers via Ansible (no Kind on CLI host) + Argo CD + server connectivity verification across **all inventory hosts**
 - [ ] ApplicationSet controller is installed and ready to receive ApplicationSet resources
 - [ ] One command debootstrap removes Game Plane without touching servers or worlds
 - [ ] CLI reports reconciliation status (healthy, syncing, error)
