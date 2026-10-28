@@ -62,26 +62,16 @@ Under the hood:
 
 > **Note:** Bootstrap takes a **local directory** containing server inventory — it does not touch game server manifests. That is the responsibility of `gameplane run` (story 1003).
 
-## Debootstrap
-
-```
-gameplane debootstrap
-```
-
-- Removes the Kind clusters and Argo CD from remote servers
-- Leaves your servers and game worlds untouched
-
 ## Expected User Flow
 
 ```
 gameplane bootstrap --inventory /path/to/local/inventory
 gameplane status
-gameplane debootstrap
 ```
 
 ## Acceptance Criteria
 
 - [ ] One command bootstraps Kind on remote servers via Ansible (no Kind on CLI host) + Argo CD + server connectivity verification across **all inventory hosts**
 - [ ] ApplicationSet controller is installed and ready to receive ApplicationSet resources
-- [ ] One command debootstrap removes Game Plane without touching servers or worlds
 - [ ] CLI reports reconciliation status (healthy, syncing, error)
+- [ ] Bootstrap is idempotent — running it on an already bootstrapped system is a no-op
